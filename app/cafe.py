@@ -5,18 +5,14 @@ from app.errors import (NotVaccinatedError,
 
 
 class Cafe:
-    masks = 0
-
     def __init__(self, name: str) -> None:
         self.name = name
 
     def visit_cafe(self, visitor: dict) -> str:
         if "vaccine" not in visitor:
-            raise NotVaccinatedError()
+            raise NotVaccinatedError("Visitor is not vaccinated")
         elif visitor["vaccine"]["expiration_date"] < date.today():
-            raise OutdatedVaccineError()
+            raise OutdatedVaccineError("Visitor's vaccine is expired")
         elif not visitor["wearing_a_mask"]:
-            Cafe.masks += 1
-            raise NotWearingMaskError(Cafe.masks)
-        else:
-            return f"Welcome to {self.name}"
+            raise NotWearingMaskError("Visitor have to wear a mask")
+        return f"Welcome to {self.name}"
